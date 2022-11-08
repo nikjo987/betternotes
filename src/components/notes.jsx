@@ -33,7 +33,7 @@ export default function Notes() {
               <div className='m-4'>
                   <label className="display-8">
                       No notes present. Start your note&nbsp;
-                      <Link to="/create">
+                      <Link to={`/create/${params.username}`}>
                           <label className="display-8 pointer-hover">
                               here.
                           </label>
