@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import {useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import httpservice from "../services/httpservice.js";
+import httpservice from "../services/httpService";
 import { useNavigate } from 'react-router';
 
 const EditNote = (props) => {
