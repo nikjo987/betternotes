@@ -1,15 +1,13 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
+import {useState} from 'react'
 import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import 'react-toastify/dist/ReactToastify.css';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Container from 'react-bootstrap/Container';
 import httpservice from '../services/httpservice';
 import { ToastContainer, toast } from 'react-toastify';
-import {useState} from 'react'
-// import 'bootstrap/dist/css/bootstrap.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 const OffcanvasExample= (props) =>  {
     let expand = 'md';
@@ -17,7 +15,7 @@ const OffcanvasExample= (props) =>  {
 
     let checkAvailableUsername = (e) =>{
         e.preventDefault()
-        httpservice.get(`http://localhost:5000/notes/isUsernameAvailable/${checkUsername}`)
+        httpservice.get(`/notes/isUsernameAvailable/${checkUsername}`)
             .then(({data}) => {
                 if(data)
                     toast.success("Availble")
