@@ -13,7 +13,7 @@ const Note = (props) => {
 
     let deleteNote = () =>{
         props.deleteNote(props.note.timestamp);
-        httpService.delete(`http://localhost:5000/notes/${params.username}/${props.note.timestamp}`)
+        httpService.delete(`/notes/${params.username}/${props.note.timestamp}`)
     }
 
     return (
