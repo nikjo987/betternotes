@@ -10,15 +10,18 @@ const CreateNote = (props) => {
     let [noteTitle, setNoteTitle] = useState("");
 
     let saveNote = () => {
-        httpservice.post(`http://localhost:5000/notes/${params.username}`, {
+        let checkNote = {
             username: params.username,
             text: noteText,
-            createdTime: new Date(),
+            createdTime:  new Date(),
             updatedTime: new Date(),
             title: noteTitle,
             timestamp: new Date().getTime()
+        }
+
+        httpservice.put(`/notes/${params.username}`, checkNote).then(({data}) =>{
+            navigate(`/mynotes/${params.username}`)
         });
-        navigate(`/mynotes/${params.username}`)
     };
 
     return (
