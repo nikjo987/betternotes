@@ -1,30 +1,35 @@
 import React from "react";
 import { useState } from "react";
-import httpservice from "../services/httpservice";
-import { Link, useLocation, Route, useNavigate } from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import httpservice from "../services/httpservice";
+import { useNavigate } from 'react-router';
 
 const EditNote = (props) => {
     const location = useLocation();
-    const navigate = useNavigate();
+    console.log(location)
     let note = location.state.note;
+    const navigate = useNavigate();
+
     let [noteText, setNoteText] = useState(note.text);
     let [noteTitle, setNoteTitle] = useState(note.title);
-    // let [email, setEmail] = useState("");
     let params = useParams()
 
-    let saveNote = () => {
-        httpservice.put(`http://localhost:5000/notes/${params.username}`, {
+    let onNoteEdited = () =>{
+        let checkNote = {
             username: params.username,
             text: noteText,
             createdTime: note.createdTime,
             updatedTime: new Date(),
             title: noteTitle,
             timestamp: note.timestamp
+        }
+
+        httpservice.put(`/notes/${params.username}`, checkNote).then(({data}) =>{
+            navigate(`/mynotes/${params.username}`)
         });
         
-        navigate(`/mynotes/${params.username}`)
-    };
+    }
 
     return (
         <form>
@@ -64,7 +69,7 @@ const EditNote = (props) => {
                 type="submit"
                 className="col-sm-1 m-4 btn btn-outline-primary"
                 style={{ right: "0px", position: "absolute" }}
-                onClick={saveNote}
+                onClick={()=>onNoteEdited(note)}
             >
                 <label className="display-8">Save</label>
             </button>
