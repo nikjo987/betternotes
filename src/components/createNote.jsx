@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import httpservice from "../services/httpService.js";
+import httpservice from "../services/httpService";
 
 const CreateNote = (props) => {
     let params = useParams()
