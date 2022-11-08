@@ -1,6 +1,6 @@
 import ListView from './list'
 import {Link, useParams} from 'react-router-dom'
-import httpservice from '../services/httpservice'
+import httpservice from '../services/httpService'
 import React, { useState,useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
