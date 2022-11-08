@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import 'react-toastify/dist/ReactToastify.css';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Container from 'react-bootstrap/Container';
-import httpservice from '../services/httpservice';
+import httpservice from '../services/httpService';
 import { ToastContainer, toast } from 'react-toastify';
 
 const OffcanvasExample= (props) =>  {
