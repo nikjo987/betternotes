@@ -1,10 +1,7 @@
-import React from 'react'
-import { useState } from 'react'
-import httpservice from '../services/httpservice'
-import CreateNote from './createNote';
 import ListView from './list'
 import {Link, useParams} from 'react-router-dom'
-import { useEffect } from 'react';
+import httpservice from '../services/httpservice'
+import React, { useState,useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Notes() {
@@ -16,10 +13,8 @@ export default function Notes() {
     setNotes(notesCurr)
   }
 
-
   useEffect(()=>{
-    console.log(notes)
-    httpservice.get(`http://localhost:5000/notes/${params.username}`)
+    httpservice.get(`/notes/${params.username}`)
       .then(({data}) =>{ 
         setNotes(data);
       })
@@ -28,7 +23,7 @@ export default function Notes() {
           setNotes([])
         }
       })
-  }, [])
+  }, [params.username])
 
   return (
       <div>
