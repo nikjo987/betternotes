@@ -13,7 +13,7 @@ const RModal = (props) => {
         if (username && props.nextLink === "create") {
             httpservice
                 .get(
-                    `http://localhost:5000/notes/isUsernameAvailable/${username}`
+                    `/notes/isUsernameAvailable/${username}`
                 )
                 .then(({ data }) => {
                     if (data) {
