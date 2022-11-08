@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import httpservice from "../services/httpservice";
+import httpservice from "../services/httpservice.js";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
