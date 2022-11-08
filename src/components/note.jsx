@@ -2,7 +2,7 @@ import React from 'react'
 import {useNavigate, useParams } from 'react-router-dom';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Card from 'react-bootstrap/Card';
-import httpService from '../services/httpservice'
+import httpService from '../services/httpService'
 
 const Note = (props) => {
     let params = useParams();
