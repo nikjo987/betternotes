@@ -23,6 +23,10 @@
     cursor: pointer;
 }
 
+.hover-link:hover{
+  color: blueviolet;
+}
+
 .card-top-delete{
     color: #dd0707;
     padding-right: 2rem;

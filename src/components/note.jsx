@@ -20,7 +20,7 @@ const Note = (props) => {
         <Card className='card'>
             <Card.Img variant="top" src="https://picsum.photos/300" />
             <Card.Body>
-                <Card.Title><label onClick={()=>editNote()} className='display-7 pointer-hover'>{props.note.title}</label></Card.Title>
+                <Card.Title><label onClick={()=>editNote()} className='display-7 pointer-hover hover-link'>{props.note.title}</label></Card.Title>
                 <Card.Text><label className='display-8'>{props.note.text}</label></Card.Text>
             </Card.Body>
             <Card.Footer className="text-muted">
