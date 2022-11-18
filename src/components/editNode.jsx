@@ -1,36 +1,44 @@
-import React from "react";
-import { useState } from "react";
-import {useLocation } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import httpservice from "../services/httpService";
-import { useNavigate } from 'react-router';
+import React,{ useEffect, useState } from "react";
+import {useNavigate, useParams } from "react-router-dom";
+import {saveNoteForUser, getNoteByTimestamp} from "../services/notesService";
 
 const EditNote = (props) => {
-    const location = useLocation();
-    console.log(location)
-    let note = location.state.note;
     const navigate = useNavigate();
-
-    let [noteText, setNoteText] = useState(note.text);
-    let [noteTitle, setNoteTitle] = useState(note.title);
     let params = useParams()
-
-    let onNoteEdited = () =>{
+    let [note, setNote] = useState()
+    
+    useEffect(() => {
+        (async () => {
+            let res = await getNoteByTimestamp(params.username, params.noteid);
+            setNote(res.data);
+        })();
+    }, [params.username, params.noteid]);
+    
+    let onNoteEdited = async () =>{
         let checkNote = {
             username: params.username,
-            text: noteText,
+            text: note.text,
             createdTime: note.createdTime,
             updatedTime: new Date(),
-            title: noteTitle,
+            title: note.title,
             timestamp: note.timestamp
         }
 
-        httpservice.put(`/notes/${params.username}`, checkNote).then(({data}) =>{
-            navigate(`/mynotes/${params.username}`)
-        });
-        
+        await saveNoteForUser(params.username, checkNote)
+        navigate({pathname:`/mynotes/${params.username}`, search:'' })        
     }
 
+    let handleNoteChange = (e) =>{
+        let currNote = note;
+        
+        if(e.target.name === "title"){
+            setNote({...currNote, title: e.target.value});
+        }
+        
+        if(e.target.name === "text"){
+            setNote({...currNote, text: e.target.value});
+        }
+    }
     return (
         <form>
             <div className="m-2">
@@ -46,8 +54,9 @@ const EditNote = (props) => {
                         type="text"
                         className="form-control"
                         id="title"
-                        value={noteTitle}
-                        onChange={({ target }) => setNoteTitle(target.value)}
+                        name="title"
+                        value={note?.title||''}
+                        onChange={(e) => handleNoteChange(e)}
                     />
                 </div>
             </div>
@@ -58,8 +67,9 @@ const EditNote = (props) => {
                         type="text"
                         className="form-control note-text"
                         id="note"
-                        value={noteText}
-                        onChange={({ target }) => setNoteText(target.value)}
+                        name="text"
+                        value={note?.text||''}
+                        onChange={(e) => handleNoteChange(e)}
                     />
                 </div>
             </div>
@@ -69,7 +79,7 @@ const EditNote = (props) => {
                 type="submit"
                 className="col-sm-1 m-4 btn btn-outline-primary"
                 style={{ right: "0px", position: "absolute" }}
-                onClick={()=>onNoteEdited(note)}
+                onClick={onNoteEdited}
             >
                 <label className="display-8">Save</label>
             </button>

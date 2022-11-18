@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import httpservice from "../services/httpService";
+import {saveNoteForUser} from "../services/notesService";
 
 const CreateNote = (props) => {
     let params = useParams()
@@ -9,7 +9,7 @@ const CreateNote = (props) => {
     let [noteText, setNoteText] = useState("");
     let [noteTitle, setNoteTitle] = useState("");
 
-    let saveNote = () => {
+    let saveNote = async () => {
         let checkNote = {
             username: params.username,
             text: noteText,
@@ -19,9 +19,8 @@ const CreateNote = (props) => {
             timestamp: new Date().getTime()
         }
 
-        httpservice.put(`/notes/${params.username}`, checkNote).then(({data}) =>{
-            navigate(`/mynotes/${params.username}`)
-        });
+        await saveNoteForUser(params.username, checkNote)
+        navigate({pathname: `/mynotes/${params.username}`, search:'' })
     };
 
     return (

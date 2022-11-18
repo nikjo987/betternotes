@@ -1,34 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import httpservice from "../services/httpService";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import {checkUsernameIsAvailable} from "../services/notesService";
+import Loader from "./loader";
 
 const RModal = (props) => {
     let [username, setUsername] = useState("");
     let [message, setMessage] = useState("");
     let [error, setError] = useState(false);
+    let [isLoading, setIsLoading] = useState(false);
 
-    let onUsernameChange = () => {
-        if (username && props.nextLink === "create") {
-            httpservice
-                .get(
-                    `/notes/isUsernameAvailable/${username}`
-                )
-                .then(({ data }) => {
-                    if (data) {
-                        setError(false);
-                        setMessage("Username is available.");
-                    } else {
-                        setError(true);
-                        setMessage(
-                            "Username is already taken, please try another"
-                        );
-                    }
-                })
-                .catch(({ error }) => {
-                    setError("Something went wrong. Please try again later.");
-                });
+    let onUsernameChange = (e) => {
+        setMessage("");
+        setUsername(e.target.value) 
+        setError(true)
+    }
+
+    let onUsernameBlur = async () => {
+        if (username) {
+            setMessage("");
+            setIsLoading(true);
+            let res =  await checkUsernameIsAvailable(username)
+            if(res.status === 200) {
+                setError(false);
+                setMessage("Username is available.");
+                setIsLoading(false)
+            } else {
+                setError(true);
+                setMessage("Username is already taken, please try another");
+                setIsLoading(false);
+            }
         }
     };
 
@@ -39,7 +41,7 @@ const RModal = (props) => {
                 onHide={props.handleClose}
                 backdrop="static"
                 keyboard={false}
-            >
+            >            
                 <Modal.Header closeButton>
                     <Modal.Title>Taking your notes</Modal.Title>
                 </Modal.Header>
@@ -50,16 +52,17 @@ const RModal = (props) => {
                     <input
                         type="text"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={onUsernameChange}
                         className="form-control display-9 m-2 bold-font"
                         placeholder="Username"
-                        onBlur={onUsernameChange}
+                        onBlur={onUsernameBlur}
                     ></input>
-                    {props.nextLink === "create" && error && (
-                        <i style={{ color: "red" }}>{message}</i>
+                    {isLoading? <Loader center={'left:"46%"'}/> : ""}
+                    {error && (
+                        <i className="m-2" style={{ color: "red" }}>{message}</i>
                     )}
-                    {props.nextLink === "create" && !error && (
-                        <i style={{ color: "green" }}>{message}</i>
+                    {!error && (
+                        <i className="m-2" style={{ color: "green" }}>{message}</i>
                     )}
                 </Modal.Body>
                 <Modal.Footer>

@@ -1,27 +1,27 @@
 import React from 'react'
-import {useNavigate, useParams } from 'react-router-dom';
-//import "bootstrap-icons/font/bootstrap-icons.css";
+import {useParams } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import httpService from '../services/httpService'
+import {deleteNoteByTimeStamp} from '../services/notesService';
+import { Trash3Fill } from 'react-bootstrap-icons';
 
 const Note = (props) => {
     let params = useParams();
-    const navigate = useNavigate();
     let editNote = () => {
-        navigate(`/edit/${params.username}/${props.note.timestamp}`, {state:{note:props.note}});
+        props.currNoteClicked(props.note.timestamp)
+        // navigate(`/edit/${params.username}/${props.note.timestamp}`, {state:{note:props.note}});
     };
 
     let deleteNote = () =>{
         props.deleteNote(props.note.timestamp);
-        httpService.delete(`/notes/${params.username}/${props.note.timestamp}`)
+        deleteNoteByTimeStamp(params.username, props.note.timestamp)
     }
 
     return (
         <Card className='card'>
             <Card.Img variant="top" src="https://picsum.photos/300" />
             <Card.Body>
-                <Card.Title><label onClick={()=>editNote()} className='display-7 pointer-hover hover-link'>{props.note.title}</label></Card.Title>
-                <Card.Text><label className='display-8'>{props.note.text}</label></Card.Text>
+                <Card.Title><label onClick={editNote} className='display-7 pointer-hover hover-link'>{props.note.title}</label></Card.Title>
+                <Card.Text><label className='display-8'>{props.note.text ? props.note.text.length>75? props.note.text.substr(0, 75)+ "...": props.note.text : ""}</label></Card.Text>
             </Card.Body>
             <Card.Footer className="text-muted">
                 <div>
@@ -36,7 +36,7 @@ const Note = (props) => {
                         )}
                         mins ago.
                     </small>
-                    <button className="btn btn-outline-danger max-right" onClick={deleteNote}>Delete</button>
+                    <button className="btn btn-outline-danger max-right" onClick={deleteNote}><Trash3Fill/></button>
                 </div>
             </Card.Footer>
         </Card>

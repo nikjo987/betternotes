@@ -23,7 +23,7 @@ let Index = (props) => {
 
     return (
         <div>
-            <Modal nextLink={nextLink} show={show} handleClose={handleClose}/>
+            <Modal show={show} handleClose={handleClose}/>
             <label className="display-1 m-2">
                 Welcome to the Better Notes!
             </label>
