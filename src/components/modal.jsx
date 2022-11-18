@@ -22,7 +22,7 @@ const RModal = (props) => {
             setMessage("");
             setIsLoading(true);
             let res =  await checkUsernameIsAvailable(username)
-            if(res.status === 200) {
+            if(res.status === 200 && res.data) {
                 setError(false);
                 setMessage("Username is available.");
                 setIsLoading(false)
